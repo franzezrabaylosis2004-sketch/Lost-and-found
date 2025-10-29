@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Report Found - Lost Link</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo"><img src="logo-placeholder.png" alt="School Logo"></div>
+    <div class="header-content">
+      <div class="title"><h1>LOST LINK</h1><p class="subtitle">Supreme Student Government</p></div>
+      <button id="hamburgerBtn" class="hamburger" aria-label="Open menu">☰</button>
+      <nav class="primary-nav" id="primaryNav">
+        <a class="nav-small" href="Untitled-1.html">Home</a>
+        <a class="nav-small" href="lost.html">Lost Items</a>
+        <a class="nav-small" href="found.html">Found Items</a>
+        <a class="nav-small" href="report-lost.html">Report Lost</a>
+        <a class="nav-small" href="report-found.html">Report Found</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="reportFound" class="page">
+      <h2>Report Found Item</h2>
+      <form id="foundForm">
+        <input name="itemName" type="text" placeholder="Item Name" required />
+        <textarea name="desc" placeholder="Description (color, brand, etc.)" required></textarea>
+  <input name="foundLocation" type="text" placeholder="Location Found" required />
+        <input name="date" type="date" required />
+  <input name="finder" type="text" placeholder="Finder's Name" required />
+  <input name="finderId" type="text" placeholder="Finder's School/ID Number" required />
+  <input name="finderProgram" type="text" placeholder="Program / Grade" required />
+        <input name="photos" type="file" accept="image/png" multiple required />
+        <input name="contact" type="text" placeholder="Contact Info (optional)" />
+        <button type="submit">Submit Found Item</button>
+      </form>
+    </section>
+  </main>
+
+  <footer><p>© 2025 Lost Link</p></footer>
+  <script src="Untitled-3.js"></script>
+</body>
+</html>

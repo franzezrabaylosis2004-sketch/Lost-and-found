@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Claim Item - Lost Link</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo"><img src="logo-placeholder.png" alt="School Logo"></div>
+    <div class="header-content">
+      <div class="title"><h1>LOST LINK</h1><p class="subtitle">Supreme Student Government</p></div>
+      <button id="hamburgerBtn" class="hamburger" aria-label="Open menu">☰</button>
+      <nav class="primary-nav" id="primaryNav">
+        <a class="nav-small" href="Untitled-1.html">Home</a>
+        <a class="nav-small" href="lost.html">Lost Items</a>
+        <a class="nav-small" href="found.html">Found Items</a>
+        <a class="nav-small" href="report-lost.html">Report Lost</a>
+        <a class="nav-small" href="report-found.html">Report Found</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="claimItem" class="page">
+      <h2>🧾 Claim an Item</h2>
+      <div id="itemStatus" style="display:none;padding:16px;border-radius:8px;margin-bottom:16px;text-align:center;">
+      </div>
+      <form id="claimForm">
+        <div class="input-group">
+          <input name="itemName" type="text" placeholder="Item Name" required />
+          <div class="status-indicator"></div>
+        </div>
+        <textarea name="proofDesc" placeholder="Describe details/proof of ownership" required></textarea>
+        <input name="claimant" type="text" placeholder="Your Name" required />
+        <input name="claimantId" type="text" placeholder="Student/Employee ID or Any ID" required />
+        <label style="font-size:0.95rem;color:var(--muted)">Upload proof of ownership (PNG)</label>
+        <input name="claimProof" type="file" accept="image/png" required />
+        <label style="font-size:0.95rem;color:var(--muted)">Upload an ID photo (PNG) to verify your identity</label>
+        <input name="claimantIdProof" type="file" accept="image/png" required />
+        <input name="contact" type="text" placeholder="Contact Info" required />
+        <button type="submit">Submit Claim</button>
+      </form>
+    </section>
+  </main>
+  
+  <style>
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-left: 8px;
+    }
+    #itemStatus {
+      font-weight: 500;
+    }
+    #itemStatus.error {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    #itemStatus.success {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+    .status-indicator.available {
+      background: #16a34a;
+    }
+    .status-indicator.unavailable {
+      background: #dc2626;
+    }
+  </style>
+
+  <footer><p>© 2025 Lost Link</p></footer>
+  <script src="Untitled-3.js"></script>
+</body>
+</html>

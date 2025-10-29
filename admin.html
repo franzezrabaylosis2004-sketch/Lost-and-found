@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SSG Admin - Lost Link</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --warning: #f97316;
+    }
+
+    .admin-wrap {
+      max-width: 900px;
+      margin: 28px auto;
+      padding: 18px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(2,6,23,0.06);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    input[type=password], input[type=text] {
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.2s;
+      font-size: 1rem;
+    }
+
+    input[type=password]:focus, input[type=text]:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row > * {
+      flex: 1;
+    }
+
+    .small {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    .status {
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .status.error {
+      background: #fef2f2;
+      color: var(--danger);
+    }
+
+    .status.success {
+      background: #f0fdf4;
+      color: var(--success);
+    }
+
+    .status.warning {
+      background: #fff7ed;
+      color: var(--warning);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease-out;
+    }
+  </style>
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <div class="logo"><img src="logo-placeholder.png" alt="School Logo"></div>
+    <div class="header-content">
+      <div class="title"><h1>SSG Admin</h1><p class="subtitle">Manage passphrase & admin session</p></div>
+      <nav class="primary-nav" id="primaryNav">
+        <a class="nav-small" href="admin-dashboard.html">Dashboard</a>
+        <a class="nav-small" href="Untitled-1.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <section class="card fade-in">
+      <h2>Admin Login</h2>
+      <p class="small">Sign in to verify claims and manage the lost and found system. Your session lasts until you close the tab.</p>
+      <div style="margin-top:16px;display:flex;gap:12px;align-items:center">
+        <div style="flex: 1;">
+          <input id="adminPass" type="password" placeholder="Enter admin passphrase" autocomplete="current-password" />
+        </div>
+        <button id="adminSignIn" class="btn-primary">Sign In</button>
+        <button id="adminSignOut" class="btn-secondary">Sign Out</button>
+      </div>
+      <div id="adminStatus" class="status" style="display: none;"></div>
+    </section>
+
+    <section class="card fade-in" style="animation-delay: 0.1s">
+      <h2>Change Admin Passphrase</h2>
+      <p class="small">To change the passphrase, you must verify the current one first. Choose a strong new passphrase.</p>
+      <div style="margin-top:16px">
+        <div class="row" style="margin-bottom: 16px">
+          <div>
+            <label>Current Passphrase</label>
+            <input id="currentPass" type="password" placeholder="Enter current passphrase" autocomplete="current-password" />
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 16px">
+          <div>
+            <label>New Passphrase</label>
+            <input id="newPass" type="password" placeholder="Enter new passphrase" autocomplete="new-password" />
+          </div>
+          <div>
+            <label>Confirm New Passphrase</label>
+            <input id="confirmPass" type="password" placeholder="Confirm new passphrase" autocomplete="new-password" />
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end">
+          <button id="changePass" class="btn-primary">Update Passphrase</button>
+        </div>
+        <div id="changeMsg" class="status" style="display: none;"></div>
+      </div>
+    </section>
+
+    <section class="card fade-in" style="animation-delay: 0.2s">
+      <h2>Danger Zone</h2>
+      <p class="small">These actions will affect system security. Use with caution.</p>
+      <div style="margin-top:16px;display:flex;gap:12px">
+        <button id="clearSession" class="btn-secondary">Clear Admin Session</button>
+        <button id="clearPass" class="btn-danger">Reset to Default Passphrase</button>
+      </div>
+      <div id="dangerMsg" class="status" style="display: none; margin-top: 12px;"></div>
+    </section>
+  </main>
+
+  <footer style="text-align:center;padding:12px;color:var(--muted)">© Lost Link — SSG</footer>
+
+  <script src="Untitled-3.js"></script>
+  <script>
+    // Admin page functionality
+    const elements = {
+      status: document.getElementById('adminStatus'),
+      changeMsg: document.getElementById('changeMsg'),
+      dangerMsg: document.getElementById('dangerMsg'),
+      adminPass: document.getElementById('adminPass'),
+      currentPass: document.getElementById('currentPass'),
+      newPass: document.getElementById('newPass'),
+      confirmPass: document.getElementById('confirmPass')
+    };
+
+    // Helper functions
+    function showStatus(message, type = 'info') {
+      const statusEl = elements.status;
+      statusEl.textContent = message;
+      statusEl.className = 'status ' + type;
+      statusEl.style.display = 'block';
+    }
+
+    function showMessage(element, message, type = 'info') {
+      element.textContent = message;
+      element.className = 'status ' + type;
+      element.style.display = 'block';
+      
+      // Auto-hide success messages after 3 seconds
+      if (type === 'success') {
+        setTimeout(() => {
+          element.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    function clearInputs(...inputs) {
+      inputs.forEach(input => {
+        if (input) input.value = '';
+      });
+    }
+
+    // Session status check
+    function refreshStatus() {
+      const isAdmin = sessionStorage.getItem('ssg_admin') === '1';
+      if (isAdmin) {
+        showStatus('Signed in as administrator', 'success');
+      } else {
+        showStatus('Not signed in', 'warning');
+      }
+    }
+
+    // Initialize
+    refreshStatus();
+
+    // Event Listeners
+    document.getElementById('adminSignIn').addEventListener('click', () => {
+      const passphrase = elements.adminPass.value.trim();
+      
+      if (!passphrase) {
+        showStatus('Please enter your admin passphrase', 'error');
+        return;
+      }
+
+      if (passphrase === window.getSSGPassphrase()) {
+        sessionStorage.setItem('ssg_admin', '1');
+        showStatus('✓ Login successful! Redirecting to dashboard...', 'success');
+        elements.adminPass.value = '';
+        setTimeout(() => window.location.href = 'admin-dashboard.html', 1000);
+      } else {
+        showStatus('❌ Incorrect passphrase', 'error');
+        elements.adminPass.value = '';
+      }
+    });
+
+    // Handle Enter key in login field
+    elements.adminPass.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('adminSignIn').click();
+      }
+    });
+
+    document.getElementById('adminSignOut').addEventListener('click', () => {
+      sessionStorage.removeItem('ssg_admin');
+      refreshStatus();
+      showMessage(elements.dangerMsg, '✓ Successfully signed out', 'success');
+    });
+
+    document.getElementById('changePass').addEventListener('click', () => {
+      const current = elements.currentPass.value.trim();
+      const newPass = elements.newPass.value.trim();
+      const confirm = elements.confirmPass.value.trim();
+      
+      if (!newPass || !confirm) {
+        showMessage(elements.changeMsg, 'Please enter and confirm the new passphrase', 'error');
+        return;
+      }
+
+      if (newPass !== confirm) {
+        showMessage(elements.changeMsg, 'New passphrases do not match', 'error');
+        return;
+      }
+
+      if (newPass.length < 6) {
+        showMessage(elements.changeMsg, 'New passphrase must be at least 6 characters', 'error');
+        return;
+      }
+
+      const success = window.setSSGPassphrase(newPass, current);
+      if (success) {
+        showMessage(elements.changeMsg, '✓ Passphrase successfully updated', 'success');
+        clearInputs(elements.currentPass, elements.newPass, elements.confirmPass);
+      } else {
+        showMessage(elements.changeMsg, '❌ Current passphrase is incorrect', 'error');
+        elements.currentPass.value = '';
+      }
+    });
+
+    document.getElementById('clearPass').addEventListener('click', () => {
+      if (!confirm('⚠️ WARNING: This will reset the admin passphrase to default.\nAre you sure you want to continue?')) {
+        return;
+      }
+      
+      localStorage.removeItem('ssg_passphrase');
+      showMessage(elements.dangerMsg, '⚠️ Passphrase reset to default', 'warning');
+      sessionStorage.removeItem('ssg_admin');
+      refreshStatus();
+    });
+
+    document.getElementById('clearSession').addEventListener('click', () => {
+      sessionStorage.removeItem('ssg_admin');
+      refreshStatus();
+      showMessage(elements.dangerMsg, '✓ Admin session cleared', 'success');
+    });
+  </script>
+</body>
+</html>

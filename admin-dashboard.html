@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SSG Admin Dashboard - Lost Link</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Lively color palette */
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --card-hover: #f8fafc;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bubble {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .admin-wrap {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 18px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.08);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: var(--card-hover);
+      transform: translateY(-2px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 16px;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      transition: background-color 0.2s;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #1e293b;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:hover td {
+      background-color: #f1f5f9;
+    }
+
+    .muted {
+      color: #64748b;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .small {
+      font-size: 0.95rem;
+      color: #64748b;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 12px;
+    }
+
+    /* Button Styles */
+    .btn-group {
+      display: flex;
+      gap: 8px;
+    }
+    
+    button {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-warning {
+      background: #f97316;
+      color: white;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Status Badge Styles */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .status-badge.success {
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #86efac;
+    }
+
+    .status-badge.warning {
+      background: #fff7ed;
+      color: #ea580c;
+      border: 1px solid #fdba74;
+    }
+
+    .status-badge.danger {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+    }
+
+    /* Item Type Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .badge-blue {
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-red {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+    }
+
+    .badge-gray {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Photos Cell */
+    .photos-cell {
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .photos-cell img {
+      transition: all 0.3s ease;
+      cursor: zoom-in;
+    }
+
+    .photos-cell img:hover {
+      transform: scale(2);
+      z-index: 100;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                  0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Image styles */
+    img {
+      transition: transform 0.3s ease;
+    }
+
+    img:hover {
+      transform: scale(1.8);
+      z-index: 10;
+    }
+
+    /* Checkbox styling */
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    /* Prevent the header logo from scaling on hover */
+    .logo img:hover, .logo:hover img { transform: none !important; z-index: 1 !important; }
+
+  </style>
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <div class="logo">
+      <img src="logo-placeholder.png" alt="School Logo" style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1))">
+    </div>
+    <div class="header-content">
+      <div class="title">
+        <h1 style="background: linear-gradient(90deg, #4f46e5, #6366f1); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+          SSG Dashboard
+        </h1>
+        <p class="subtitle" style="font-size: 1.1rem; margin-top: 4px;">✨ Pending claims & verification</p>
+      </div>
+      <nav class="primary-nav" id="primaryNav" style="display: flex; gap: 12px;">
+        <a class="nav-small" href="admin.html" style="position: relative; padding: 8px 16px; border-radius: 20px; background: #4f46e5; color: white; text-decoration: none; transition: all 0.3s;">Admin</a>
+        <a class="nav-small" href="Untitled-1.html" style="position: relative; padding: 8px 16px; border-radius: 20px; background: #f1f5f9; text-decoration: none; transition: all 0.3s;">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <div class="topbar">
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button id="refreshBtn" style="display: flex; align-items: center; gap: 6px;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Refresh
+        </button>
+        <button id="verifySelected" style="background: var(--success); color: white;">Verify Selected</button>
+        <button id="rejectSelected" style="background: var(--danger); color: white;">Reject Selected</button>
+      </div>
+      <div>
+        <button id="signOut" style="background: #f1f5f9; color: #1e293b; font-weight: 500;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+
+    <div class="tab-navigation" style="margin-bottom: 20px;">
+      <button id="reportsTab" class="tab active" onclick="switchTab('reports')" style="background: var(--primary); color: white;">Reported Items</button>
+      <button id="pendingTab" class="tab" onclick="switchTab('pending')" style="background: var(--primary-light); color: white;">Pending Claims</button>
+      <button id="verifiedTab" class="tab" onclick="switchTab('verified')" style="background: var(--success);">Verified Claims</button>
+      <button id="rejectedTab" class="tab" onclick="switchTab('rejected')" style="background: var(--danger);">Rejected Claims</button>
+    </div>
+
+    <!-- Reported Items Section -->
+    <section id="reportsSection" class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 1.5rem; margin-bottom: 8px; background: linear-gradient(90deg, #4f46e5, #6366f1); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+            Reported Items
+          </h2>
+          <p class="small" style="line-height: 1.5;">
+            <span style="display: inline-block; margin-right: 8px;">📦</span> 
+            Review and verify newly reported lost and found items
+          </p>
+        </div>
+        <div id="reportStats" style="background: #f8fafc; padding: 12px; border-radius: 12px;">
+          <div style="font-size: 1.2rem; font-weight: 600; color: var(--primary);">Loading...</div>
+          <div class="small">Total Reported Items</div>
+        </div>
+      </div>
+      <div id="reportsTableWrap" style="margin-top:12px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></div>
+    </section>
+
+    <!-- Pending Claims Section -->
+    <section id="pendingSection" class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 1.5rem; margin-bottom: 8px; background: linear-gradient(90deg, #4f46e5, #6366f1); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+            Pending Claims
+          </h2>
+          <p class="small" style="line-height: 1.5;">
+            <span style="display: inline-block; margin-right: 8px;">📋</span> 
+            This shows claims requiring admin review (proof + ID). Use the actions to verify or reject.
+          </p>
+        </div>
+        <div id="claimStats" style="background: #f8fafc; padding: 12px; border-radius: 12px;">
+          <div style="font-size: 1.2rem; font-weight: 600; color: var(--primary);">Loading...</div>
+          <div class="small">Total Pending Claims</div>
+        </div>
+      </div>
+      <div id="claimsTableWrap" style="margin-top:12px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></div>
+    </section>
+
+    <!-- Verified Claims Section -->
+    <section id="verifiedSection" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 1.5rem; margin-bottom: 8px; color: var(--success);">
+            Verified Claims
+          </h2>
+          <p class="small" style="line-height: 1.5;">
+            <span style="display: inline-block; margin-right: 8px;">✅</span> 
+            Manage verified claims. You can revert verification if needed.
+          </p>
+        </div>
+      </div>
+      <div id="verifiedTableWrap" style="margin-top:12px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></div>
+    </section>
+
+    <!-- Rejected Claims Section -->
+    <section id="rejectedSection" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 1.5rem; margin-bottom: 8px; color: var(--danger);">
+            Rejected Claims
+          </h2>
+          <p class="small" style="line-height: 1.5;">
+            <span style="display: inline-block; margin-right: 8px;">❌</span> 
+            Review rejected claims. You can revert rejections if needed.
+          </p>
+        </div>
+      </div>
+      <div id="rejectedTableWrap" style="margin-top:12px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></div>
+    </section>
+
+    <style>
+      .tab-navigation {
+        display: flex;
+        gap: 8px;
+        padding: 0 4px;
+      }
+      .tab {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        opacity: 0.8;
+        transition: all 0.2s;
+      }
+      .tab:hover {
+        opacity: 1;
+        transform: translateY(-1px);
+      }
+      .tab.active {
+        opacity: 1;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+
+      /* Enhanced Styles */
+      .empty-state {
+        text-align: center;
+        padding: 48px 24px;
+        background: #f8fafc;
+        border-radius: 16px;
+        border: 2px dashed #e2e8f0;
+      }
+
+      .empty-state h3 {
+        color: #64748b;
+        margin: 0 0 12px;
+        font-size: 1.25rem;
+      }
+
+      .empty-state p {
+        color: #94a3b8;
+        margin: 0 auto;
+        max-width: 400px;
+        line-height: 1.6;
+      }
+
+      section {
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+      }
+
+      section:not([style*="display: block"]) {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      section[style*="display: block"] {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .badge-blue {
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #bfdbfe;
+      }
+
+      .badge-red {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fca5a5;
+      }
+
+      .badge-gray {
+        background: #f8fafc;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 9999px;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      .status-badge.success {
+        background: #f0fdf4;
+        color: #16a34a;
+        border: 1px solid #86efac;
+      }
+
+      .status-badge.warning {
+        background: #fff7ed;
+        color: #ea580c;
+        border: 1px solid #fdba74;
+      }
+
+      .status-badge.danger {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fca5a5;
+      }
+
+      .photos-cell {
+        padding: 12px;
+        background: #f8fafc;
+        border-radius: 12px;
+        text-align: center;
+      }
+
+      .photos-cell img {
+        transition: all 0.3s ease;
+        cursor: zoom-in;
+      }
+
+      .photos-cell img:hover {
+        transform: scale(2);
+        z-index: 100;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      /* Button Groups */
+      .btn-group {
+        display: flex;
+        gap: 8px;
+      }
+
+      button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      button svg {
+        transition: transform 0.2s ease;
+      }
+
+      button:hover svg {
+        transform: scale(1.1);
+      }
+
+      /* Keyboard Shortcut Tips */
+      [data-tooltip] {
+        position: relative;
+      }
+
+      [data-tooltip]:hover::before {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 4px 8px;
+        background: #1e293b;
+        color: white;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        white-space: nowrap;
+        z-index: 10;
+      }
+
+      /* Checkbox styling */
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+        appearance: none;
+        border: 2px solid #e2e8f0;
+        transition: all 0.2s ease;
+        vertical-align: middle;
+      }
+
+      input[type="checkbox"]:checked {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+
+      input[type="checkbox"]:checked::after {
+        content: "✓";
+        position: absolute;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </main>
+
+  <footer style="text-align:center;padding:12px;color:var(--muted)">© Lost Link — SSG</footer>
+
+  <script src="Untitled-3.js"></script>
+  <script>
+    (function(){
+      // Small, focused admin script: authentication, tab handling, rendering, and actions.
+      function formatDate(iso){ if(!iso) return 'N/A'; const d=new Date(iso); const t=new Date(); const y=new Date(); y.setDate(t.getDate()-1); if(d.toDateString()===t.toDateString()) return 'Today ' + d.toLocaleTimeString(); if(d.toDateString()===y.toDateString()) return 'Yesterday ' + d.toLocaleTimeString(); return d.toLocaleString(); }
+
+      function ensureAuth(){ if (!isAdminAuthenticated()) { return authenticateAdmin(); } return true; }
+
+      function save(items){ localStorage.setItem('items', JSON.stringify(items)); }
+
+      function verifyClaim(itemIndex, claimIndex){ if(!ensureAuth()) return; const items=JSON.parse(localStorage.getItem('items')||'[]'); const item=items[itemIndex]; if(!item||!item.claims||!item.claims[claimIndex]) return; const claim=item.claims[claimIndex]; claim.verified=true; claim.verifiedAt=new Date().toISOString(); claim.verifiedBy='SSG Admin'; item.status='Released'; item.releasedTo={name:claim.name,id:claim.id,contact:claim.contact,time:new Date().toISOString()}; save(items); renderTabContent(currentTab); }
+
+      function rejectClaim(itemIndex, claimIndex){ if(!ensureAuth()) return; const items=JSON.parse(localStorage.getItem('items')||'[]'); const item=items[itemIndex]; if(!item||!item.claims||!item.claims[claimIndex]) return; const claim=item.claims[claimIndex]; claim.status='Rejected'; claim.rejectedAt=new Date().toISOString(); claim.rejectedBy='SSG Admin'; const hasPending=item.claims.some(c=>!c.verified&&c.status!=='Rejected'); if(!hasPending) item.status='Available'; save(items); renderTabContent(currentTab); }
+
+      function verifyReportedItem(itemIndex){ if(!ensureAuth()) return; const items=JSON.parse(localStorage.getItem('items')||'[]'); const item=items[itemIndex]; if(!item) return; item.status='Verified'; item.verifiedAt=new Date().toISOString(); item.verifiedBy='SSG Admin'; save(items); renderTabContent(currentTab); }
+
+      function revertVerification(itemIndex, claimIndex){ if(!ensureAuth()) return; const items=JSON.parse(localStorage.getItem('items')||'[]'); const item=items[itemIndex]; if(!item) return; if(typeof claimIndex==='number'){ const claim=item.claims[claimIndex]; if(!claim) return; claim.verified=false; delete claim.verifiedAt; delete claim.verifiedBy; item.status='Claim Requested - Pending Admin Verification'; delete item.releasedTo; } else { item.status='Pending Verification'; delete item.verifiedAt; delete item.verifiedBy; } save(items); renderTabContent(currentTab); }
+
+      function revertRejection(itemIndex, claimIndex){ if(!ensureAuth()) return; const items=JSON.parse(localStorage.getItem('items')||'[]'); const item=items[itemIndex]; if(!item||!item.claims||!item.claims[claimIndex]) return; const claim=item.claims[claimIndex]; delete claim.status; delete claim.rejectedAt; delete claim.rejectedBy; item.status='Claim Requested - Pending Admin Verification'; save(items); renderTabContent(currentTab); }
+
+      let currentTab = new URLSearchParams(location.search).get('tab') || 'reports';
+
+      function switchTab(tab){ currentTab=tab; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); const b=document.getElementById(tab+'Tab'); if(b) b.classList.add('active'); ['reports','pending','verified','rejected'].forEach(s=>{ const el=document.getElementById(s+'Section'); if(el) el.style.display=(s===tab?'block':'none'); }); renderTabContent(tab); }
+
+      function renderTabContent(tab){ if(!isAdminAuthenticated()){ location.href='admin.html'; return; } const items=JSON.parse(localStorage.getItem('items')||'[]'); let rows=[]; if(tab==='reports'){ items.forEach((it,i)=>rows.push({itemIndex:i,item:it})); } else { items.forEach((it,i)=> (it.claims||[]).forEach((c,ci)=> rows.push({itemIndex:i,claimIndex:ci,item:it,claim:c}))); if(tab==='pending') rows=rows.filter(r=> !r.claim.verified && r.claim.status!=='Rejected'); if(tab==='verified') rows=rows.filter(r=> r.claim.verified); if(tab==='rejected') rows=rows.filter(r=> r.claim.status==='Rejected'); }
+        const wrap=document.getElementById(tab+'TableWrap'); if(!wrap) return; if(!rows.length){ wrap.innerHTML=`<div class="empty-state"><h3>No ${tab==='reports'?'reported items':tab+' claims'}</h3><p class="small">No entries to show.</p></div>`; return; }
+        const table=document.createElement('table'); const thead=document.createElement('thead'); const tr=document.createElement('tr'); tr.innerHTML=`<th style="width:30px"><input type=checkbox class=select-all title="Select all"></th>` + (tab==='reports' ? '<th>Item Details</th><th>Reporter Info</th><th>Photos</th><th>Location & Date</th><th>Status</th><th>Actions</th>' : '<th>Item</th><th>Claimant</th><th>Proof</th><th>ID Photo</th><th>Note</th><th>Status</th><th>Actions</th>'); thead.appendChild(tr); table.appendChild(thead);
+        const tbody=document.createElement('tbody'); rows.forEach(r=>{ const row=document.createElement('tr'); if(tab==='reports'){ const photos=(r.item.photos||[]).map(p=>`<img src="${p}" style="width:100px;height:70px;object-fit:cover;border-radius:6px;margin-right:6px">`).join(''); const statusText=r.item.status||'Pending Verification'; const actions = r.item.status==='Verified' ? `<button class="btn-warning" onclick="(function(i){revertVerification(i)} )(${r.itemIndex})">Revert</button>` : `<button class="btn-success" onclick="(function(i){verifyReportedItem(i)} )(${r.itemIndex})">Verify</button>`; row.innerHTML = `<td><input type=checkbox class=row-select data-item="${r.itemIndex}"></td><td><div style="font-weight:600">${r.item.name}</div><div class="muted">${r.item.desc||''}</div></td><td><div>${r.item.person||''}</div><div class="muted">ID: ${r.item.meta?.reporterId||'N/A'}</div></td><td class="photos-cell">${photos}</td><td><div><b>Loc:</b> ${r.item.loc||''}</div><div><b>Date:</b> ${r.item.date||''}</div></td><td><div class="status-badge ${r.item.status==='Verified'?'success':'warning'}">${statusText}</div></td><td class="actions">${actions}</td>`; } else { const statusText = r.claim.verified ? `Verified ${formatDate(r.claim.verifiedAt)}` : (r.claim.status==='Rejected' ? `Rejected ${formatDate(r.claim.rejectedAt)}` : 'Pending'); const actions = r.claim.verified ? `<button class="btn-warning" onclick="(function(i,ci){revertVerification(i,ci)} )(${r.itemIndex},${r.claimIndex})">Revert</button>` : (r.claim.status==='Rejected' ? `<button class="btn-warning" onclick="(function(i,ci){revertRejection(i,ci)} )(${r.itemIndex},${r.claimIndex})">Revert</button>` : `<button class="btn-success" onclick="(function(i,ci){verifyClaim(i,ci)} )(${r.itemIndex},${r.claimIndex})">Verify</button> <button class="btn-danger" onclick="(function(i,ci){rejectClaim(i,ci)} )(${r.itemIndex},${r.claimIndex})">Reject</button>`); const proof = r.claim.proof ? `<img src="${r.claim.proof}" style="width:140px;height:90px;object-fit:cover;border-radius:6px">` : '<span class="muted">No proof</span>'; const idp = r.claim.idProof ? `<img src="${r.claim.idProof}" style="width:140px;height:90px;object-fit:cover;border-radius:6px">` : '<span class="muted">No ID</span>'; row.innerHTML = `<td><input type=checkbox class=row-select data-item="${r.itemIndex}" data-claim="${r.claimIndex}"></td><td><div style="font-weight:600">${r.item.name}</div><div class="muted">${r.item.loc||''}</div></td><td><div style="font-weight:500">${r.claim.name||''}</div><div class="muted">ID: ${r.claim.id||''}</div></td><td class="photos-cell">${proof}</td><td class="photos-cell">${idp}</td><td style="max-width:220px">${r.claim.note||''}<div class="muted">Claimed ${formatDate(r.claim.time)}</div></td><td><div class="status-badge ${r.claim.verified?'success':(r.claim.status==='Rejected'?'danger':'warning')}">${statusText}</div></td><td class="actions">${actions}</td>`; } tbody.appendChild(row); }); table.appendChild(tbody); wrap.innerHTML=''; wrap.appendChild(table); wrap.querySelectorAll('.select-all').forEach(sa=>sa.addEventListener('change',e=>{ const checked=e.target.checked; wrap.querySelectorAll('input.row-select').forEach(cb=>cb.checked=checked); })); }
+
+      // Wire top controls
+      document.getElementById('refreshBtn').addEventListener('click', ()=> renderTabContent(currentTab));
+      document.getElementById('verifySelected').addEventListener('click', ()=>{ if(!ensureAuth()) return; const sels=Array.from(document.querySelectorAll('input.row-select:checked')); if(!sels.length) return alert('Select at least one row'); if(!confirm(`Verify ${sels.length} selected?`)) return; sels.forEach(cb=>{ const it=parseInt(cb.dataset.item,10); const ci=cb.dataset.claim?parseInt(cb.dataset.claim,10):NaN; if(!isNaN(ci)) verifyClaim(it,ci); else verifyReportedItem(it); }); });
+      document.getElementById('rejectSelected').addEventListener('click', ()=>{ if(!ensureAuth()) return; const sels=Array.from(document.querySelectorAll('input.row-select:checked')); if(!sels.length) return alert('Select at least one row'); if(!confirm(`Reject ${sels.length} selected?`)) return; sels.forEach(cb=>{ const it=parseInt(cb.dataset.item,10); const ci=cb.dataset.claim?parseInt(cb.dataset.claim,10):NaN; if(!isNaN(ci)) rejectClaim(it,ci); }); });
+      document.getElementById('signOut').addEventListener('click', ()=>{ sessionStorage.removeItem('ssg_admin'); location.href='admin.html'; });
+
+      document.addEventListener('keydown', e=>{ if(e.altKey && e.key==='r'){ e.preventDefault(); renderTabContent(currentTab); } if(e.altKey && e.key==='v'){ e.preventDefault(); document.getElementById('verifySelected').click(); } if(e.altKey && e.key==='x'){ e.preventDefault(); document.getElementById('rejectSelected').click(); } });
+
+  // expose a few helpers globally for inline handlers and nav
+  window.switchTab = switchTab;
+  window.verifyClaim = verifyClaim;
+  window.rejectClaim = rejectClaim;
+  window.verifyReportedItem = verifyReportedItem;
+  window.revertVerification = revertVerification;
+  window.revertRejection = revertRejection;
+
+  // initial load
+  if(!ensureAuth()) return; document.getElementById(currentTab+'Tab')?.classList.add('active'); ['reports','pending','verified','rejected'].forEach(s=>{ const el=document.getElementById(s+'Section'); if(el) el.style.display = (s===currentTab?'block':(s==='reports' && currentTab==='reports')?'block':'none'); }); renderTabContent(currentTab);
+    })();
+  </script>
+</body>
+</html>

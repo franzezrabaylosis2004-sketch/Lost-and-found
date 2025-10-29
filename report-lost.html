@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Report Lost - Lost Link</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo"><img src="logo-placeholder.png" alt="School Logo"></div>
+    <div class="header-content">
+      <div class="title"><h1>LOST LINK</h1><p class="subtitle">De La Salle John Bosco College Lost and Found</p></div>
+      <button id="hamburgerBtn" class="hamburger" aria-label="Open menu">☰</button>
+      <nav class="primary-nav" id="primaryNav">
+        <a class="nav-small" href="Untitled-1.html">Home</a>
+        <a class="nav-small" href="lost.html">Lost Items</a>
+        <a class="nav-small" href="found.html">Found Items</a>
+        <a class="nav-small" href="report-lost.html">Report Lost</a>
+        <a class="nav-small" href="report-found.html">Report Found</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="reportLost" class="page">
+      <h2>Report Lost Item</h2>
+      <div id="statusMessage" class="status" style="display:none;margin-bottom:20px;padding:12px;border-radius:8px;"></div>
+      <form id="lostForm">
+        <div class="form-group">
+          <label>Item Name*</label>
+          <input name="itemName" type="text" placeholder="Enter the name of the lost item" required />
+        </div>
+        <div class="form-group">
+          <label>Description*</label>
+          <textarea name="desc" placeholder="Provide detailed description (color, brand, identifying marks, etc.)" required rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Last Seen Location*</label>
+          <input name="location" type="text" placeholder="Where did you last see the item?" required />
+        </div>
+        <div class="form-group">
+          <label>Date Lost*</label>
+          <input name="date" type="date" required />
+        </div>
+        <div class="form-group">
+          <label>Your Name*</label>
+          <input name="reporter" type="text" placeholder="Enter your full name" required />
+        </div>
+        <div class="form-group">
+          <label>School/ID Number*</label>
+          <input name="reporterId" type="text" placeholder="Enter your school ID number" required />
+        </div>
+        <div class="form-group">
+          <label>Program / Grade*</label>
+          <input name="reporterProgram" type="text" placeholder="Enter your program or grade level" required />
+        </div>
+        <div class="form-group">
+          <label>Photos of the Item*</label>
+          <input name="photos" type="file" accept="image/png" multiple required />
+          <small class="muted">Upload clear photos of the item. PNG format required.</small>
+        </div>
+        <div class="form-group">
+          <label>Contact Information</label>
+          <input name="contact" type="text" placeholder="Enter your contact details (phone/email)" />
+          <small class="muted">How can we reach you when your item is found?</small>
+        </div>
+        <div style="margin-top:20px">
+          <button type="submit" class="btn-primary">Submit Lost Item Report</button>
+        </div>
+      </form>
+    </section>
+
+    <style>
+      .form-group {
+        margin-bottom: 16px;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      input[type="text"],
+      input[type="date"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.2s;
+      }
+      input:focus,
+      textarea:focus {
+        border-color: #4f46e5;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      }
+      .btn-primary {
+        background: #4f46e5;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+      }
+      .status {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+      }
+      .status.success {
+        background: #f0fdf4;
+        color: #16a34a;
+        border: 1px solid #86efac;
+      }
+      .status.error {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fca5a5;
+      }
+      .muted {
+        color: #64748b;
+        font-size: 0.9rem;
+        display: block;
+        margin-top: 4px;
+      }
+    </style>
+  </main>
+
+  <footer><p>© 2025 Lost Link</p></footer>
+  <script src="Untitled-3.js"></script>
+</body>
+</html>
